@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
 const categoriesRoutes = require('./controllers/categories');
+const bookRoutes = require('./routes/book');
 const sequelize = require('./config/db');
 
 require('dotenv').config();
@@ -14,6 +15,7 @@ app.use(bodyParser.json());
 // Routes
 app.use('/api', userRoutes);
 app.use(categoriesRoutes);
+app.use(bookRoutes);
 
 // Sync Database
 sequelize.sync()
