@@ -1,29 +1,31 @@
-const db = require('../config/db');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db');
 
-class Loan {
-    static getAllLoans(callback) {
-        db.query('SELECT * FROM loans', callback);
+const Loan = sequelize.define('Loan', {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    book_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    loan_date: {
+        type: DataTypes.DATE,
+        allowNull: false
+    },
+    return_date: {
+        type: DataTypes.DATE,
+        allowNull: true
     }
-
-    static addLoan(book_id, user_id, loan_date, return_date, callback) {
-        db.query(
-            'INSERT INTO loans (book_id, user_id, loan_date, return_date) VALUES (?, ?, ?, ?)',
-            [book_id, user_id, loan_date, return_date],
-            callback
-        );
-    }
-
-    static updateLoan(id, book_id, user_id, loan_date, return_date, callback) {
-        db.query(
-            'UPDATE loans SET book_id = ?, user_id = ?, loan_date = ?, return_date = ? WHERE id = ?',
-            [book_id, user_id, loan_date, return_date, id],
-            callback
-        );
-    }
-
-    static deleteLoan(id, callback) {
-        db.query('DELETE FROM loans WHERE id = ?', [id], callback);
-    }
-}
+}, {
+    tableName: 'loans',
+    timestamps: false
+});
 
 module.exports = Loan;
