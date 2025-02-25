@@ -1,31 +1,17 @@
-const express = require('express');
-const router = express.Router();
-const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
-
-// Definisi Model Kategori
-const Kategori = sequelize.define('Kategori', {
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false
-    }
-}, {
-    tableName: 'kategori',
-    timestamps: false
-});
+const Kategori = require('../models/kategoriModel');
 
 // GET semua kategori
-router.get('/categories', async (req, res) => {
+const getAllCategories = async (req, res) => {
     try {
         const categories = await Kategori.findAll();
         res.status(200).json(categories);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-});
+};
 
 // POST tambah kategori baru
-router.post('/', async (req, res) => {
+const createCategory = async (req, res) => {
     try {
         const { name } = req.body;
         if (!name) {
@@ -36,10 +22,10 @@ router.post('/', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-});
+};
 
 // PUT update kategori berdasarkan ID
-router.put('/:id', async (req, res) => {
+const updateCategory = async (req, res) => {
     try {
         const { id } = req.params;
         const { name } = req.body;
@@ -59,10 +45,10 @@ router.put('/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-});
+};
 
 // DELETE kategori berdasarkan ID
-router.delete('/:id', async (req, res) => {
+const deleteCategory = async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -76,6 +62,11 @@ router.delete('/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-});
+};
 
-module.exports = router;
+module.exports = {
+    getAllCategories,
+    createCategory,
+    updateCategory,
+    deleteCategory
+};
